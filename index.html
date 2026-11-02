@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#153b30">
+  <meta name="description" content="A practical checklist, vendor directory, and previous-year expense reference for the college Pre-Christmas 2026 program.">
+  <title>Pre-Christmas 2026 | College Program Planner</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="data.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="eyebrow"><span class="eyebrow-dot"></span> COLLEGE PROGRAM · WORKING HANDOVER</div>
+      <div class="header-title-row">
+        <div>
+          <h1>Pre-Christmas <span>2026</span></h1>
+          <p class="header-subtitle">A simple guide for planning, coordinating, and getting things done.</p>
+        </div>
+        <div class="year-stamp" aria-label="Year 2026"><span>EDITION</span><strong>’26</strong></div>
+      </div>
+      <div class="header-meta"><span>Bihta</span><span class="meta-separator">•</span><span>Junior team handover</span><span class="meta-separator">•</span><span class="draft-label">Living document</span></div>
+    </div>
+  </header>
+
+  <main class="page-shell">
+    <section class="overview" aria-label="Checklist overview">
+      <div class="overview-copy">
+        <span class="section-kicker">THE PLAN</span>
+        <h2>Make the celebration happen.</h2>
+        <p>Use the checklist to track work, the vendor directory to find contacts, and last year’s expenses as a reference while planning this year’s budget.</p>
+      </div>
+      <div class="progress-panel">
+        <div class="progress-topline"><span>Overall progress</span><strong id="progress-label">0%</strong></div>
+        <div class="progress-track" role="progressbar" aria-label="Checklist completion" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress-bar"><span id="progress-fill"></span></div>
+        <div class="progress-foot"><span id="completed-count">0 completed</span><span id="remaining-count">0 remaining</span></div>
+      </div>
+    </section>
+
+    <nav class="tab-nav" aria-label="Planner sections">
+      <button class="tab-button active" type="button" data-tab="checklist" aria-selected="true"><span class="tab-number">01</span> Checklist</button>
+      <button class="tab-button" type="button" data-tab="vendors" aria-selected="false"><span class="tab-number">02</span> Vendor directory</button>
+      <button class="tab-button" type="button" data-tab="expenses" aria-selected="false"><span class="tab-number">03</span> 2025 expenses</button>
+    </nav>
+
+    <section class="tab-panel" id="panel-checklist" aria-labelledby="checklist-heading">
+      <div class="section-heading">
+        <div><span class="section-kicker">WORK TRACKER</span><h2 id="checklist-heading">The checklist</h2><p>Tick an item when it is completed. Progress is saved in this browser.</p></div>
+        <button class="text-button" type="button" id="reset-progress">Reset progress ↺</button>
+      </div>
+      <div class="toolbar">
+        <label class="search-box"><span class="sr-only">Search checklist</span><span class="search-icon" aria-hidden="true">⌕</span><input id="task-search" type="search" placeholder="Search tasks…" autocomplete="off"></label>
+        <div class="filter-group" role="group" aria-label="Filter checklist">
+          <button class="filter-button active" type="button" data-filter="all" aria-pressed="true">All</button>
+          <button class="filter-button" type="button" data-filter="pending" aria-pressed="false">To do</button>
+          <button class="filter-button" type="button" data-filter="done" aria-pressed="false">Done</button>
+        </div>
+      </div>
+      <div id="checklist-list" class="checklist-groups" aria-live="polite"></div>
+      <p class="local-save-note"><span aria-hidden="true">ⓘ</span> Checklist ticks are stored only on the device and browser being used. They do not automatically sync between juniors.</p>
+    </section>
+
+    <section class="tab-panel" id="panel-vendors" aria-labelledby="vendors-heading" hidden>
+      <div class="section-heading">
+        <div><span class="section-kicker">WHO TO CONTACT</span><h2 id="vendors-heading">Vendor directory</h2><p>Contacts and market references collected for the planning team.</p></div>
+        <span class="count-chip" id="vendor-count">0 contacts</span>
+      </div>
+      <div class="toolbar vendor-toolbar">
+        <label class="search-box"><span class="sr-only">Search vendors</span><span class="search-icon" aria-hidden="true">⌕</span><input id="vendor-search" type="search" placeholder="Search item, vendor, or contact…" autocomplete="off"></label>
+      </div>
+      <div class="vendor-grid" id="vendor-list" aria-live="polite"></div>
+      <p class="directory-note">Please confirm availability, rates, quantities, and delivery/pickup details directly with each vendor before placing an order.</p>
+    </section>
+
+    <section class="tab-panel" id="panel-expenses" aria-labelledby="expenses-heading" hidden>
+      <div class="section-heading">
+        <div><span class="section-kicker">BUDGET REFERENCE</span><h2 id="expenses-heading">Last year’s expenses</h2><p>Recorded spending from the 2025 Pre-Christmas program, for comparison while preparing the 2026 budget.</p></div>
+        <span class="count-chip">YEAR · 2025</span>
+      </div>
+      <div class="expense-summary">
+        <div><span class="summary-label">TOTAL RECORDED SPEND · 2025</span><strong id="expense-total">₹0</strong></div>
+        <p>These are historical amounts from the expense image provided. They are not confirmed 2026 quotations.</p>
+      </div>
+      <div class="table-wrap">
+        <table class="expense-table">
+          <thead><tr><th scope="col">#</th><th scope="col">Item / expense</th><th scope="col" class="amount-col">Amount spent</th></tr></thead>
+          <tbody id="expense-rows"></tbody>
+          <tfoot><tr><th scope="row" colspan="2">Total recorded spend</th><td class="amount-col" id="expense-total-table">₹0</td></tr></tfoot>
+        </table>
+      </div>
+      <p class="expense-footnote">Currency is shown as INR (₹). Please verify the original records before using these figures for formal accounting.</p>
+    </section>
+
+    <footer class="site-footer">
+      <div class="footer-mark">PC<span>26</span></div>
+      <div><strong>Pre-Christmas 2026</strong><p>Working document · Update as plans develop.</p></div>
+      <span class="footer-version">CONTENT CAN CHANGE</span>
+    </footer>
+  </main>
+</body>
+</html>
