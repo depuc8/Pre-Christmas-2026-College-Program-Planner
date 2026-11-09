@@ -5,7 +5,6 @@
   - Update last year's reference figures in `expenses2025` only when you have verified records.
   Keep each task `id` unique so saved ticks remain associated with the right task.
 */
-
 window.PRE_CHRISTMAS_DATA = {
   tasks: [
     {
@@ -92,35 +91,33 @@ window.PRE_CHRISTMAS_DATA = {
       detail: "Confirm speakers, microphones, operator, setup/check time, and total charges.",
       vendorId: "martin-sound"
     },
-
     {
-      id: "nss-chairs",
+      id: "request-chairs-nss",
       category: "Venue & logistics",
-      title: "Email NSS regarding chairs",
-      detail: "Send an email to the NSS coordinator requesting chairs from the NSS room. Confirm availability, required quantity, permission, collection time, and return arrangements."
+      title: "Email NSS to request chairs",
+      detail: "Mail the NSS room in-charge/coordinator to request chairs for the program. Confirm the quantity, approval, collection and return timings, and who will handle transport.",
     },
     {
-      id: "dinner-transport",
+      id: "dinner-delivery-transport",
       category: "Food & refreshments",
-      title: "Arrange transport for dinner delivery",
-      detail: "Coordinate with Vimal Bhaiya to ensure dinner is delivered to the college. Confirm transport arrangements, delivery timing, drop-off location, and any additional transportation charges.",
+      title: "Confirm dinner transport to college",
+      detail: "Coordinate with Vimal Bhaiya about how the dinner will be brought to college. Confirm who arranges the vehicle, delivery time, drop-off point, and any additional transport charges.",
       vendorId: "vimal-bhaiya"
     },
     {
       id: "patties-heater",
       category: "Food & refreshments",
       title: "Arrange a heater for veg patties",
-      detail: "Arrange a suitable food heater or warmer for serving veg patties. Confirm availability, electricity requirements, and who will operate it."
+      detail: "Arrange a suitable food heater/warmer for serving the patties. Confirm availability, electricity requirements, safe placement, and who will operate it.",
+      vendorId: "wini-cakes"
     },
     {
-      id: "security-permission",
+      id: "security-outside-entry",
       category: "Permissions & coordination",
-      title: "Email security office for outside personnel entry",
-      detail: "Send an email to the college security office requesting entry permission for outside band members, flex/banner arranging personnel, and other event workers. Provide names, contact numbers, ID details, vehicle numbers, and entry/exit timings as required by the security office."
+      title: "Email security office for outside-personnel entry permission",
+      detail: "Request gate-entry permission for outside event personnel, including band members and the flex/banner arranging team. Share their names, roles, phone numbers, ID details if required, vehicle details, and arrival/departure timings with the security office.",
     }
   ],
-
-
 
   vendors: [
     { id: "local-decoration", category: "Decoration", item: "Decoration items", name: "Local Bihta market", contact: "", note: "Confirm exact items and quantities with the team." },

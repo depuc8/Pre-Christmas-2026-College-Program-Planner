@@ -1,0 +1,13 @@
+{
+  "rules": {
+    "preChristmas2026": {
+      "checklist": {
+        ".read": "auth != null",
+        "$taskId": {
+          ".write": "auth != null",
+          ".validate": "newData.isBoolean()"
+        }
+      }
+    }
+  }
+}

@@ -1,47 +1,118 @@
 # Pre-Christmas 2026 Planner
 
-A lightweight, mobile-friendly checklist and vendor directory for the college Pre-Christmas 2026 program. It is a static website: no server, database, framework, build step, or paid hosting is needed.
+A lightweight, mobile-friendly checklist and vendor directory for the college Pre-Christmas 2026 program. The website is hosted on GitHub Pages; shared checklist ticks are synchronized in real time through Firebase Realtime Database.
 
 ## Files
 
 - `index.html` — page structure and sections.
 - `styles.css` — layout, colors, and responsive styling.
-- `data.js` — **the main file to edit** when adding/changing tasks, vendors, contacts, or the 2025 expense reference.
-- `app.js` — checklist behavior, search, filters, progress, and local browser saving.
+- `data.js` — edit this file to change tasks, vendors, contacts, or 2025 expenses.
+- `app.js` — checklist behavior and live Firebase synchronization.
+- `firebase-config.js` — add the Firebase web-app configuration for your project.
+- `database.rules.json` — copy these rules into Firebase Realtime Database > Rules.
 
-## Preview on your computer
+## One-time setup for a shared checklist
 
-1. Download or unzip the project folder.
-2. Open `index.html` in a modern browser.
-3. For a more realistic local preview, you can use the VS Code extension **Live Server** and choose “Open with Live Server”. No build command is required.
+GitHub Pages hosts static files; it does not store shared checkmarks. Firebase provides the small online database needed for all visitors to see the same progress. The site uses Firebase anonymous authentication, so juniors do not need to create accounts just to tick tasks.
 
-## Free hosting with GitHub Pages
+### 1. Create a Firebase project
 
-1. Sign in to GitHub and create a new repository, for example `pre-christmas-2026`.
-2. Choose **Public** for the simplest free GitHub Pages setup.
-3. Upload all four project files (`index.html`, `styles.css`, `data.js`, and `app.js`) to the **root** of the repository. Keep the filenames unchanged because the HTML links to them.
-4. Open the repository's **Settings → Pages**.
-5. Under **Build and deployment**, set **Source** to **Deploy from a branch**.
-6. Set the branch to **main** and the folder to **/(root)**, then click **Save**.
-7. Wait for the GitHub Pages deployment to finish. The site URL will look like `https://YOUR-USERNAME.github.io/pre-christmas-2026/`. GitHub will also show the published URL in **Settings → Pages**.
-8. Whenever you update the files and push/commit the changes to `main`, GitHub Pages republishes the site automatically.
+1. Open <https://console.firebase.google.com/> and sign in with a Google account.
+2. Choose **Add project** and create a project, for example `pre-christmas-2026`.
+3. In Project Overview, choose **Add app** and select the **Web** app (`</>`).
+4. Register the app. You do not need Firebase Hosting; keep GitHub Pages as the website host.
+5. In the app setup screen, copy the web configuration values. You will use `apiKey`, `authDomain`, `projectId`, and `appId` in step 4.
 
-If you use a different repository name, the URL's final path will use that repository name. Keep `index.html` at the repository root for these instructions to work as written.
+### 2. Create the Realtime Database
 
-## How to update the content later
+1. In Firebase Console, open **Build → Realtime Database**.
+2. Click **Create Database** and choose a region.
+3. Create it in **Locked mode**.
+4. Copy the exact database URL shown by Firebase. It may look like `https://YOUR-DATABASE-NAME.REGION.firebasedatabase.app`; use the actual URL shown in your console, not this example.
+
+### 3. Enable anonymous sign-in
+
+1. Open **Build → Authentication**.
+2. Click **Get started** if prompted.
+3. Open **Sign-in method** (or **Sign-in providers**).
+4. Enable **Anonymous** and save.
+
+### 4. Fill in `firebase-config.js`
+
+Open `firebase-config.js` in your GitHub repository and replace the placeholder values with the values from your Firebase web app and Realtime Database:
+
+```javascript
+window.PRE_CHRISTMAS_FIREBASE_CONFIG = {
+  apiKey: "PASTE_API_KEY",
+  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+  databaseURL: "PASTE_EXACT_DATABASE_URL_FROM_FIREBASE",
+  projectId: "YOUR_PROJECT_ID",
+  appId: "PASTE_APP_ID"
+};
+```
+
+Use the exact `authDomain`, `projectId`, and other values shown in the Firebase console. The Firebase web config is intended to be included in a client-side website; do not put service-account private keys or other server secrets in this file.
+
+### 5. Set the Realtime Database rules
+
+1. In Firebase Console, open **Realtime Database → Rules**.
+2. Replace the rules with the contents of `database.rules.json` in this project:
+
+```json
+{
+  "rules": {
+    "preChristmas2026": {
+      "checklist": {
+        ".read": "auth != null",
+        "$taskId": {
+          ".write": "auth != null",
+          ".validate": "newData.isBoolean()"
+        }
+      }
+    }
+  }
+}
+```
+
+3. Click **Publish**.
+
+These rules require Firebase authentication and only accept boolean task states at the checklist task entries. The page signs visitors in anonymously. Because the website is public and anonymous sign-in is enabled, anyone who can access the website can also tick or untick shared tasks. If you need to restrict edits to college members only, use an account-based sign-in method and tighter authorization rules instead.
+
+### 6. Push the updated site files to GitHub
+
+Commit these files to the same repository and branch used by GitHub Pages:
+
+- `index.html`
+- `styles.css`
+- `app.js`
+- `firebase-config.js`
+
+`data.js` does not need to change for synchronization. You may also keep `database.rules.json` in the repository as a reference; Firebase reads the rules you publish in its console, not that local file automatically.
+
+Wait for the GitHub Pages deployment to finish, then open the website on two different devices or browsers. Tick a task on one; it should appear on the other within a moment. The checklist section displays a live-sync status message.
+
+## How shared progress works
+
+- All visitors use the same Firebase path: `preChristmas2026/checklist`.
+- A tick or untick is written to Firebase and streamed to every open copy of the page.
+- Progress is shared across phones, laptops, and browsers; it is no longer saved in each person's `localStorage`.
+- The **Reset progress** button resets the shared checklist for everyone, so use it carefully.
+- Previously saved local-only ticks are not automatically merged into the new shared database. The shared checklist starts from the database's current contents (empty for a new database).
+
+## Free usage
+
+Firebase's no-cost Spark plan currently includes a Realtime Database allowance of 1 GB stored data, 10 GB/month downloaded data, and 100 simultaneous connections. This small checklist should use very little data, but check Firebase's pricing page for current limits and any changes: <https://firebase.google.com/pricing/>.
+
+## Editing the planner later
 
 Open `data.js` and edit the data object:
 
-- Add a task to the `tasks` array. Give it a unique `id`, a `category`, `title`, `detail`, and (optionally) a `vendorId` matching a vendor's `id`.
-- Add a vendor to the `vendors` array. Give it a unique `id`, then fill in `category`, `item`, `name`, `contact`, and `note`.
-- Add or correct a past expense in `expenses2025` using `{ item: "Item name", amount: 1234 }`.
+- Add tasks to the `tasks` array with a unique `id`, `category`, `title`, and `detail`.
+- Add vendors to the `vendors` array and use the vendor's `id` as a task's optional `vendorId`.
+- Add or correct past expenses in `expenses2025` using `{ item: "Item name", amount: 1234 }`.
 
-Save `data.js`, then commit and push the changed file to GitHub. The page will calculate the expense total automatically. Amounts are treated as INR.
-
-## Important note about checklist progress
-
-Checklist ticks are saved in the current browser's `localStorage`. This means each junior sees and saves their own progress on their own device/browser. GitHub Pages does **not** synchronize the checkmarks between different people. The task/vendor/expense content itself is shared because it is part of the published website. If the team later needs shared live progress, the site would need a shared database or a connected spreadsheet/service.
+New task IDs can be used immediately by the page. The security rules above accept boolean states for task entries; if you later want stricter per-task allow-lists, update the rules accordingly.
 
 ## Data notes
 
-The 2025 expense figures were transcribed from the supplied image. The total shown by the page is the sum of those listed entries. Vendor names and contact numbers are reproduced from the details supplied; verify all contact numbers and current prices before ordering. One number for Monginies is kept exactly as supplied and flagged for verification.
+The 2025 expense figures were transcribed from the supplied image. Vendor names and contact numbers are reproduced from the details supplied; verify all numbers and current prices before ordering. One number for Monginies is preserved as provided and flagged for verification.

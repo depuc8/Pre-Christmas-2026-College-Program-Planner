@@ -85,7 +85,11 @@ h1 span { color: #e3c98f; }
 .task-vendor-link:hover { text-decoration: underline; }
 .empty-state { grid-column: 1 / -1; text-align: center; color: var(--muted); background: var(--paper); border: 1px dashed #d9ddd4; border-radius: 9px; padding: 30px 16px; font-size: 12px; }
 .local-save-note, .directory-note, .expense-footnote { color: #7b837a; font-size: 10px; margin: 15px 0 0; }
-.local-save-note span { color: var(--pine-3); margin-right: 4px; }
+.local-save-note > span:first-child { color: var(--pine-3); margin-right: 4px; }
+#sync-status[data-state="success"] { color: #2f6652; }
+#sync-status[data-state="error"] { color: #a24736; }
+#sync-status[data-state="loading"] { color: #7b837a; }
+.text-button:disabled { opacity: .45; cursor: not-allowed; }
 .count-chip { color: var(--pine-3); background: var(--soft-green); border: 1px solid #dce8dc; border-radius: 99px; padding: 6px 10px; font-size: 10px; font-weight: 750; white-space: nowrap; }
 .vendor-toolbar { justify-content: flex-start; }
 .vendor-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }

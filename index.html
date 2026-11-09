@@ -7,8 +7,9 @@
   <meta name="description" content="A practical checklist, vendor directory, and previous-year expense reference for the college Pre-Christmas 2026 program.">
   <title>Pre-Christmas 2026 | College Program Planner</title>
   <link rel="stylesheet" href="styles.css">
-  <script src="data.js" defer></script>
-  <script src="app.js" defer></script>
+  <script src="data.js"></script>
+  <script src="firebase-config.js"></script>
+  <script type="module" src="app.js"></script>
 </head>
 <body>
   <header class="site-header">
@@ -47,7 +48,7 @@
 
     <section class="tab-panel" id="panel-checklist" aria-labelledby="checklist-heading">
       <div class="section-heading">
-        <div><span class="section-kicker">WORK TRACKER</span><h2 id="checklist-heading">The checklist</h2><p>Tick an item when it is completed. Progress is saved in this browser.</p></div>
+        <div><span class="section-kicker">WORK TRACKER</span><h2 id="checklist-heading">The checklist</h2><p>Tick an item when it is completed. Updates sync live for everyone using this page.</p></div>
         <button class="text-button" type="button" id="reset-progress">Reset progress ↺</button>
       </div>
       <div class="toolbar">
@@ -59,7 +60,7 @@
         </div>
       </div>
       <div id="checklist-list" class="checklist-groups" aria-live="polite"></div>
-      <p class="local-save-note"><span aria-hidden="true">ⓘ</span> Checklist ticks are stored only on the device and browser being used. They do not automatically sync between juniors.</p>
+      <p class="local-save-note"><span aria-hidden="true">●</span> <span id="sync-status" data-state="loading" role="status" aria-live="polite">Connecting to the shared checklist…</span></p>
     </section>
 
     <section class="tab-panel" id="panel-vendors" aria-labelledby="vendors-heading" hidden>
